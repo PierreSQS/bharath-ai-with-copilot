@@ -1,4 +1,4 @@
-package com.bharath.patientclinicals.clinicalsapi.clinicalsapi;
+package com.bharath.patientclinicals.clinicalsapi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

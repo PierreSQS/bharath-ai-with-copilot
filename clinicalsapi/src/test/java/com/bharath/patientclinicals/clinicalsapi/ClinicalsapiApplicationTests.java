@@ -1,4 +1,4 @@
-package com.bharath.patientclinicals.clinicalsapi.clinicalsapi;
+package com.bharath.patientclinicals.clinicalsapi;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
