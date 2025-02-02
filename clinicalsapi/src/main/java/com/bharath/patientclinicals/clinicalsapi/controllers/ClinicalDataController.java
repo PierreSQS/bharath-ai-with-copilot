@@ -1,5 +1,6 @@
 package com.bharath.patientclinicals.clinicalsapi.controllers;
 
+import com.bharath.patientclinicals.clinicalsapi.dto.ClinicalDataRequest;
 import com.bharath.patientclinicals.clinicalsapi.entities.ClinicalData;
 import com.bharath.patientclinicals.clinicalsapi.repositories.ClinicalDataRepository;
 import lombok.RequiredArgsConstructor;
@@ -35,12 +36,11 @@ public class ClinicalDataController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ClinicalData> updateClinicalData(@PathVariable Long id, @RequestBody ClinicalData clinicalDataDetails) {
+    public ResponseEntity<ClinicalData> updateClinicalData(@PathVariable Long id, @RequestBody ClinicalDataRequest clinicalDataDetails) {
         return clinicalDataRepository.findById(id)
                 .map(clinicalData -> {
                     clinicalData.setComponentName(clinicalDataDetails.getComponentName());
                     clinicalData.setComponentValue(clinicalDataDetails.getComponentValue());
-                    clinicalData.setMeasuredDateTime(clinicalDataDetails.getMeasuredDateTime());
                     clinicalData.setPatient(clinicalDataDetails.getPatient());
                     return ResponseEntity.ok(clinicalDataRepository.save(clinicalData));
                 })
