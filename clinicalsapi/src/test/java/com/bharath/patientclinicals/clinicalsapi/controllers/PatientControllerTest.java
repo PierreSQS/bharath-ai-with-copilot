@@ -20,6 +20,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -54,7 +55,8 @@ class PatientControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].firstName").value("John"))
                 .andExpect(jsonPath("$[0].lastName").value("Doe"))
-                .andExpect(jsonPath("$[0].age").value(30));
+                .andExpect(jsonPath("$[0].age").value(30))
+                .andDo(print());
     }
 
     @Test
@@ -65,7 +67,8 @@ class PatientControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName").value("John"))
                 .andExpect(jsonPath("$.lastName").value("Doe"))
-                .andExpect(jsonPath("$.age").value(30));
+                .andExpect(jsonPath("$.age").value(30))
+                .andDo(print());
     }
 
     @Test
@@ -73,7 +76,8 @@ class PatientControllerTest {
         given(patientRepository.findById(1L)).willReturn(Optional.empty());
 
         mockMvc.perform(get("/api/patients/1"))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound())
+                .andDo(print());
     }
 
     @Test
@@ -86,7 +90,8 @@ class PatientControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.firstName").value("John"))
                 .andExpect(jsonPath("$.lastName").value("Doe"))
-                .andExpect(jsonPath("$.age").value(30));
+                .andExpect(jsonPath("$.age").value(30))
+                .andDo(print());
     }
 
     @Test
@@ -106,7 +111,8 @@ class PatientControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName").value("Jane"))
                 .andExpect(jsonPath("$.lastName").value("Doe"))
-                .andExpect(jsonPath("$.age").value(28));
+                .andExpect(jsonPath("$.age").value(28))
+                .andDo(print());
     }
 
     @Test
@@ -122,7 +128,8 @@ class PatientControllerTest {
         mockMvc.perform(put("/api/patients/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updatedPatient)))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound())
+                .andDo(print());
     }
 
     @Test
@@ -130,7 +137,8 @@ class PatientControllerTest {
         given(patientRepository.findById(1L)).willReturn(Optional.of(patient));
 
         mockMvc.perform(delete("/api/patients/1"))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isNoContent())
+                .andDo(print());
     }
 
     @Test
@@ -138,6 +146,7 @@ class PatientControllerTest {
         given(patientRepository.findById(1L)).willReturn(Optional.empty());
 
         mockMvc.perform(delete("/api/patients/1"))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound())
+                .andDo(print());
     }
 }
