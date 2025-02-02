@@ -1,5 +1,6 @@
 package com.bharath.patientclinicals.clinicalsapi.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -27,9 +28,6 @@ public class ClinicalData {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "patient_id")
-    private Long patientId;
-
     @Column(name = "component_name")
     private String componentName;
 
@@ -39,7 +37,8 @@ public class ClinicalData {
     private LocalDateTime measuredDateTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "patient_id", nullable = false)
+    @JoinColumn(name = "patient_id")
+    @JsonIgnore
     private Patient patient;
 
 }
