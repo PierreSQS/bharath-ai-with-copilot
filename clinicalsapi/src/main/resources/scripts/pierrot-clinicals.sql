@@ -1,5 +1,9 @@
 USE clinicals_db;
 
+-- must run first to avoid foreign key constraint violation
+DROP TABLE IF EXISTS clinicaldata;
+DROP TABLE IF EXISTS patient;
+
 CREATE TABLE patient (
     id int NOT NULL AUTO_INCREMENT,
     last_name varchar(255) NOT NULL,
