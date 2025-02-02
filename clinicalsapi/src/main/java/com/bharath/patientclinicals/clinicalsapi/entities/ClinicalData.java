@@ -14,6 +14,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Column;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -21,6 +23,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Entity
 @Table(name = "clinicaldata")
 public class ClinicalData {
@@ -34,11 +37,13 @@ public class ClinicalData {
     @Column(name = "component_value")
     private String componentValue;
 
+    @CreationTimestamp
     private LocalDateTime measuredDateTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id")
     @JsonIgnore
+    @ToString.Exclude
     private Patient patient;
 
 }
