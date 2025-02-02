@@ -70,8 +70,8 @@ class ClinicalDataControllerTest {
         given(clinicalDataRepo.save(Mockito.any(ClinicalData.class))).willReturn(clinicalData);
 
         mockMvc.perform(post("/api/clinicaldata")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(clinicalData)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(clinicalData)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.componentName").value("Blood Pressure"))
                 .andExpect(jsonPath("$.componentValue").value("120/80"))
@@ -89,8 +89,8 @@ class ClinicalDataControllerTest {
         given(clinicalDataRepo.save(Mockito.any(ClinicalData.class))).willReturn(updatedClinicalData);
 
         mockMvc.perform(put("/api/clinicaldata/1")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(updatedClinicalData)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updatedClinicalData)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.componentName").value("Heart Rate"))
                 .andExpect(jsonPath("$.componentValue").value("75"))
@@ -107,8 +107,8 @@ class ClinicalDataControllerTest {
         given(clinicalDataRepo.findById(1L)).willReturn(Optional.empty());
 
         mockMvc.perform(put("/api/clinicaldata/1")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(updatedClinicalData)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updatedClinicalData)))
                 .andExpect(status().isNotFound())
                 .andDo(print());
     }

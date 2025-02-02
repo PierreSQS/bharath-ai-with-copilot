@@ -85,8 +85,8 @@ class PatientControllerTest {
         given(patientRepository.save(Mockito.any(Patient.class))).willReturn(patient);
 
         mockMvc.perform(post("/api/patients")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(patient)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(patient)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.firstName").value("John"))
                 .andExpect(jsonPath("$.lastName").value("Doe"))
@@ -106,8 +106,8 @@ class PatientControllerTest {
         given(patientRepository.save(Mockito.any(Patient.class))).willReturn(updatedPatient);
 
         mockMvc.perform(put("/api/patients/1")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(updatedPatient)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updatedPatient)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName").value("Jane"))
                 .andExpect(jsonPath("$.lastName").value("Doe"))
@@ -126,8 +126,8 @@ class PatientControllerTest {
         given(patientRepository.findById(1L)).willReturn(Optional.empty());
 
         mockMvc.perform(put("/api/patients/1")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(updatedPatient)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updatedPatient)))
                 .andExpect(status().isNotFound())
                 .andDo(print());
     }
