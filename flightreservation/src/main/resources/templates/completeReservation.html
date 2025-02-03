@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Complete Reservation</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+    <h2>Complete Reservation</h2>
+    <p>Airline: <span th:text="${flight.operatingAirlines}"/></p>
+    <p>Departure City:  <span th:text="${flight.departureCity}"/></p>
+    <p>Arrival City:<span th:text="${flight.arrivalCity}"/></p>
+
+    <form action="completeReservation" method="post">
+        <fieldset>
+            <legend>Passenger Details:</legend>
+            <label>First Name:<input type="text" name="firstName"/></label>
+            <label>Last Name:<input type="text" name="lastName"/></label>
+            <label>Email:<input type="text" name="email"/></label>
+            <label>Phone:<input type="text" name="phone"/></label>
+        </fieldset>
+        <input type="hidden" name="flightId" th:value="${flight.id}"/>
+        <input type="submit" value="confirm"/>
+    </form>
+</body>
+</html>
