@@ -15,7 +15,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -37,7 +37,7 @@ public class ClinicalData {
     @Column(name = "component_value")
     private String componentValue;
 
-    @UpdateTimestamp
+    @CreationTimestamp
     private LocalDateTime measuredDateTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
