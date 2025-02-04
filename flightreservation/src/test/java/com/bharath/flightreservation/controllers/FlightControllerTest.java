@@ -19,6 +19,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.StringContains.containsString;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -31,10 +32,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class FlightControllerTest {
 
     @MockitoBean
-    private FlightRepository flightRepository;
+    FlightRepository flightRepository;
 
     @Autowired
-    private MockMvc mockMvc;
+    MockMvc mockMvc;
 
     @BeforeEach
     public void setUp() {
@@ -53,15 +54,17 @@ class FlightControllerTest {
 
     @Test
     void findFlightsReturnsDisplayFlightsViewWithFlights() throws Exception {
+        // Given
         Flight flight = new Flight();
         flight.setDepartureCity("NYC");
         flight.setArrivalCity("LAX");
         flight.setDateOfDeparture(LocalDate.of(2023, 12, 25).atStartOfDay());
-        Mockito.when(flightRepository
+        given(flightRepository
                         .findByDepartureCityAndArrivalCityAndDateOfDeparture("NYC", "LAX",
                                 LocalDate.of(2023, 12, 25).atStartOfDay()))
-                .thenReturn(Collections.singletonList(flight));
+                .willReturn(Collections.singletonList(flight));
 
+        // When, Then
         MvcResult mvcResult = mockMvc.perform(post("/findFlights")
                         .param("to", "LAX")
                         .param("from", "NYC")
@@ -81,8 +84,9 @@ class FlightControllerTest {
 
     @Test
     void findFlightsReturnsDisplayFlightsViewWithNoFlights() throws Exception {
-        Mockito.when(flightRepository.findByDepartureCityAndArrivalCityAndDateOfDeparture("NYC", "LAX", LocalDate.of(2023, 12, 25).atStartOfDay()))
-                .thenReturn(Collections.emptyList());
+        given(flightRepository.findByDepartureCityAndArrivalCityAndDateOfDeparture(
+                "NYC", "LAX", LocalDate.of(2023, 12, 25).atStartOfDay()))
+                .willReturn(Collections.emptyList());
 
         mockMvc.perform(post("/findFlights")
                         .param("to", "LAX")
