@@ -30,7 +30,7 @@ public class FlightController {
                               @RequestParam("departureDate") LocalDate departureDate,
                               Model model) {
         List<Flight> flights = flightRepository
-                .findByDepartureCityAndArrivalCityAndDateOfDeparture(from, to, departureDate.atStartOfDay());
+                .findByDepartureCityAndArrivalCityAndDateOfDeparture(from, to, departureDate);
         model.addAttribute("flights", flights);
         return "displayFlights";
     }

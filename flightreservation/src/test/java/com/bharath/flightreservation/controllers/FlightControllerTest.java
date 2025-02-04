@@ -58,10 +58,10 @@ class FlightControllerTest {
         Flight flight = new Flight();
         flight.setDepartureCity("NYC");
         flight.setArrivalCity("LAX");
-        flight.setDateOfDeparture(LocalDate.of(2023, 12, 25).atStartOfDay());
+        flight.setDateOfDeparture(LocalDate.of(2023, 12, 25));
         given(flightRepository
                         .findByDepartureCityAndArrivalCityAndDateOfDeparture("NYC", "LAX",
-                                LocalDate.of(2023, 12, 25).atStartOfDay()))
+                                LocalDate.of(2023, 12, 25)))
                 .willReturn(Collections.singletonList(flight));
 
         // When, Then
@@ -85,7 +85,7 @@ class FlightControllerTest {
     @Test
     void findFlightsReturnsDisplayFlightsViewWithNoFlights() throws Exception {
         given(flightRepository.findByDepartureCityAndArrivalCityAndDateOfDeparture(
-                "NYC", "LAX", LocalDate.of(2023, 12, 25).atStartOfDay()))
+                "NYC", "LAX", LocalDate.of(2023, 12, 25)))
                 .willReturn(Collections.emptyList());
 
         mockMvc.perform(post("/findFlights")

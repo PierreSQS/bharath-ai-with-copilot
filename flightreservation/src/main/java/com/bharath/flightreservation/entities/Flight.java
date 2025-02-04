@@ -11,6 +11,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
@@ -39,7 +40,7 @@ public class Flight {
     private String arrivalCity;
 
     @Column(name = "DATE_OF_DEPARTURE")
-    private LocalDateTime dateOfDeparture;
+    private LocalDate dateOfDeparture;
 
     @Column(name = "ESTIMATED_DEPARTURE_TIME")
     private LocalDateTime estimatedDepartureTime;
