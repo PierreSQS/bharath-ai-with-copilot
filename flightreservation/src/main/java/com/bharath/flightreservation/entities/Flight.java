@@ -30,7 +30,7 @@ public class Flight {
     private String flightNumber;
 
     @Column(name = "OPERATING_AIRLINES")
-    private String operatingAirline;
+    private String operatingAirlines;
 
     @Column(name = "DEPARTURE_CITY")
     private String departureCity;
