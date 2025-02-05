@@ -51,7 +51,7 @@ class ReservationControllerTest {
                 .willReturn(Optional.of(flightMock));
 
         // When, Then
-        MvcResult result = mockMvc.perform(get("/displayReservationForm")
+        MvcResult result = mockMvc.perform(get("/showCompleteReservation")
                         .param("flightID", "1"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("completeReservation"))

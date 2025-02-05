@@ -14,9 +14,9 @@ public class ReservationController {
 
     private final FlightRepository flightRepository;
 
-    @GetMapping("/displayReservationForm")
+    @GetMapping("/showCompleteReservation")
     public String displayReservationForm(@RequestParam("flightID") Long flightID, Model model) {
-        Flight flight = flightRepository.findById(flightID).orElse(null);
+        Flight flight = flightRepository.findById(flightID).orElseThrow(() ->  new RuntimeException("Flight not found"));
         model.addAttribute("flight", flight);
         return "completeReservation";
     }
