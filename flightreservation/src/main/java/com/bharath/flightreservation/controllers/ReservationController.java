@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @RequiredArgsConstructor
@@ -30,9 +29,10 @@ public class ReservationController {
     }
 
     @PostMapping("/completeReservation")
-    public String completeReservation(@RequestBody ReservationDTO reservationReqDTO, Model model) {
+    public String completeReservation(ReservationDTO reservationReqDTO, Model model) {
         Reservation reservation = reservationService.bookFlight(reservationReqDTO);
-        model.addAttribute("reservation", reservation);
+        model.addAttribute("msg",
+                "Reservation created successfully and the id is " + reservation.getId());
         return "reservationConfirmation";
     }
 }
