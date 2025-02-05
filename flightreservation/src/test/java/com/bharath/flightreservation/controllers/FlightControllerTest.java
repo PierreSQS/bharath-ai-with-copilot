@@ -17,7 +17,9 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -72,6 +74,9 @@ class FlightControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("displayFlights"))
                 .andExpect(model().attribute("flights", hasSize(1)))
+                .andExpect(model().attribute("flights", equalTo(List.of(flight))))
+                .andExpect(content().string(containsString("showCompleteReservation?flightId")))
+                .andDo(print())
                 .andReturn();
 
 
@@ -94,7 +99,10 @@ class FlightControllerTest {
                         .param("departureDate", "2023-12-25"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("displayFlights"))
-                .andExpect(model().attribute("flights", hasSize(0)));
+                .andExpect(model().attribute("flights", hasSize(0)))
+                .andExpect(content().string(not(
+                        containsString("showCompleteReservation?flightId"))))
+                .andDo(print());
     }
 
 }
