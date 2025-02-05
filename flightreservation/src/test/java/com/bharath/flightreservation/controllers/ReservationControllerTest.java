@@ -13,9 +13,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -52,7 +53,7 @@ class ReservationControllerTest {
 
         // When, Then
         MvcResult result = mockMvc.perform(get("/showCompleteReservation")
-                        .param("flightID", "1"))
+                        .param("flightId", "1"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("completeReservation"))
                 .andExpect(model().attribute("flight", is(flightMock)))
@@ -64,7 +65,16 @@ class ReservationControllerTest {
         ModelAndView modelAndView = result.getModelAndView();
         assert modelAndView != null;
         Flight modelFlight = (Flight) modelAndView.getModel().get("flight");
-        assertEquals("NYC", modelFlight.getDepartureCity());
-        assertEquals("LAX", modelFlight.getArrivalCity());
+        assertThat(modelFlight.getDepartureCity()).isEqualTo("NYC");
+        assertThat(modelFlight.getArrivalCity()).isEqualTo("LAX");
+    }
+
+    @Test
+    void testDisplayReservationForm_FlightNotFound() {
+        assertThatThrownBy(() ->
+                mockMvc.perform(get("/showCompleteReservation")
+                        .param("flightId", "1")))
+                .isInstanceOf(Exception.class)
+                .hasMessageContaining("Flight not found");
     }
 }
