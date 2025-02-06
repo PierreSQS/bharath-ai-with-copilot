@@ -1,4 +1,4 @@
-USE RESERVATION;
+USE RESERVATION_DB;
 
 -- must run first to avoid foreign key constraint violation
 DROP TABLE IF EXISTS RESERVATION;
