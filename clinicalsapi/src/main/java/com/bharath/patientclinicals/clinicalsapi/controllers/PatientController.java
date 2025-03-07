@@ -1,69 +1,53 @@
 package com.bharath.patientclinicals.clinicalsapi.controllers;
 
-import com.bharath.patientclinicals.clinicalsapi.entities.Patient;
-import com.bharath.patientclinicals.clinicalsapi.repositories.PatientRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-import java.util.Optional;
 
-@Slf4j
-@RequiredArgsConstructor
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.bharath.patientclinicals.clinicalsapi.models.Patient;
+import com.bharath.patientclinicals.clinicalsapi.repos.PatientRepository;
+
+
+
 @RestController
-@RequestMapping("api/patients")
+@RequestMapping("/patients")
 public class PatientController {
 
-    private final PatientRepository patientRepository;
+    @Autowired
+    private PatientRepository patientRepository;
 
     @GetMapping
-    public List<Patient> getAllPatients() {
-        log.info("Getting all patients");
+    public List<Patient> getPatients() {
         return patientRepository.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Patient> getPatientById(@PathVariable Long id) {
-        log.info("Getting patient by id: {}", id);
-        Optional<Patient> patient = patientRepository.findById(id);
-        return patient.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public Patient getPatient(@PathVariable Long id) {
+        return patientRepository.findById(id).get();
     }
 
     @PostMapping
-    public ResponseEntity<Patient> createPatient(@RequestBody Patient patient) {
-        log.info("Creating patient: {}", patient);
-        Patient savedPatient = patientRepository.save(patient);
-        return new ResponseEntity<>(savedPatient, HttpStatus.CREATED);
+    public Patient createPatient(@RequestBody Patient patient) {
+        return patientRepository.save(patient);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Patient> updatePatient(@PathVariable Long id, @RequestBody Patient patientDetails) {
-        log.info("Updating patient with id: {}", id);
-        Optional<Patient> optionalPatient = patientRepository.findById(id);
-        if (optionalPatient.isPresent()) {
-            Patient patient = optionalPatient.get();
-            patient.setFirstName(patientDetails.getFirstName());
-            patient.setLastName(patientDetails.getLastName());
-            patient.setAge(patientDetails.getAge());
-            patient.setClinicalData(patientDetails.getClinicalData());
-            return ResponseEntity.ok(patientRepository.save(patient));
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public Patient updatePatient(@PathVariable Long id, @RequestBody Patient patient) {
+        patient.setId(id);
+        return patientRepository.save(patient);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePatient(@PathVariable Long id) {
-        log.info("Deleting patient with id: {}", id);
-        Optional<Patient> patient = patientRepository.findById(id);
-        if (patient.isPresent()) {
-            patientRepository.delete(patient.get());
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+    public void deletePatient(@PathVariable Long id) {
+        patientRepository.deleteById(id);
+    } 
+    
 }

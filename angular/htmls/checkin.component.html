@@ -1,0 +1,16 @@
+<h1>Review Details</h1>
+<h2>Flight Details:</h2>
+Airlines: {{data?.flight?.operatingAirlines}}<br/>
+Flight No: {{data?.flight?.flightNumber}}<br/>
+Departure City: {{data?.flight?.departureCity}}<br/>
+Arrival City: {{data?.flight?.arrivalCity}}<br/>
+Date Of Departure: {{data?.flight?.dateOfDeparture}}<br/>
+Estimated Departure Time: {{data?.flight?.estimatedDepartureTime}}<br/>
+<h2>Passenger Details:</h2>
+
+First Name: {{data?.passenger?.firstName}}<br/>
+Last Name: {{data?.passenger?.lastName}}<br/>
+Email : {{data?.passenger?.email}}<br/>
+Phone: {{data?.passenger?.phone}}<br/>
+Enter the number of bags to check in:<input type="text" [(ngModel)]="noOfbags" />
+<button (click)="checkIn()">CheckIn</button>

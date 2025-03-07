@@ -1,38 +1,36 @@
 package com.bharath.flightreservation.controllers;
 
+import com.bharath.flightreservation.repos.FlightRepository;
 import com.bharath.flightreservation.entities.Flight;
-import com.bharath.flightreservation.repositories.FlightRepository;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
 
-@RequiredArgsConstructor
+
 @Controller
-
 public class FlightController {
 
-    private final FlightRepository flightRepository;
+    @Autowired
+    private FlightRepository flightRepository;
 
     @GetMapping("/findFlights")
-    public String displayFindFlightForm() {
-        return "findFlights";
+    public String displayFindFlights() {
+        return "findFlights"; 
     }
 
     @PostMapping("/findFlights")
-    public String findFlights(@RequestParam("to") String to,
-                              @RequestParam("from") String from,
-                              @RequestParam("departureDate") LocalDate departureDate,
-                              Model model) {
-        List<Flight> flights = flightRepository
-                .findByDepartureCityAndArrivalCityAndDateOfDeparture(from, to, departureDate);
+    public String findFlights(@RequestParam("from") String from, @RequestParam("to") String to, @RequestParam("departureDate") @DateTimeFormat(pattern = "MM-dd-yyyy") Date departureDate, Model model) {
+        List<Flight> flights = flightRepository.findFlights(from, to, departureDate);
         model.addAttribute("flights", flights);
         return "displayFlights";
     }
+
 
 }
