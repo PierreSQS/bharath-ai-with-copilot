@@ -22,6 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -120,6 +121,21 @@ class ReservationControllerTest {
         assertThat(reservationDTOArgumentCaptor.getValue().getPhone()).isEqualTo("1234567890");
         assertThat(reservationDTOArgumentCaptor.getValue().getEmail()).isEqualTo("john.doe@example.com");
         assertThat(reservationDTOArgumentCaptor.getValue().getFlightId()).isEqualTo(1L);
+    }
+
+    @Test
+    void testCompleteReservation_FlightNotFound() {
+        // Given
+        given(reservationServ.bookFlight(any(ReservationDTO.class)))
+                .willThrow(new RuntimeException("Flight not found"));
+
+        // When, Then
+        assertThatThrownBy(() -> {
+            mockMvc.perform(post("/completeReservation")
+                .param("flightId", "999")); // Non-existent flight ID
+
+    }).isInstanceOf(Exception.class)
+            .hasMessageContaining("Flight not found");
     }
 
 }
