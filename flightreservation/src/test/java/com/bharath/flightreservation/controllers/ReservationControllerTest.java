@@ -1,9 +1,14 @@
 package com.bharath.flightreservation.controllers;
 
+import com.bharath.flightreservation.dtos.ReservationDTO;
 import com.bharath.flightreservation.entities.Flight;
+import com.bharath.flightreservation.entities.Reservation;
 import com.bharath.flightreservation.repositories.FlightRepository;
+import com.bharath.flightreservation.services.ReservationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -20,6 +25,7 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -35,7 +41,15 @@ class ReservationControllerTest {
     @MockitoBean
     FlightRepository flightRepository;
 
+    @MockitoBean
+    ReservationService reservationServ;
+
+    @Captor
+    private ArgumentCaptor<ReservationDTO> reservationDTOArgumentCaptor;
+
     Flight flightMock;
+
+    Reservation reservationMock;
 
     @BeforeEach
     void setUp() {
@@ -43,6 +57,9 @@ class ReservationControllerTest {
         flightMock.setId(1L);
         flightMock.setDepartureCity("NYC");
         flightMock.setArrivalCity("LAX");
+
+        reservationMock = new Reservation();
+        reservationMock.setId(1L);
     }
 
     @Test
@@ -77,4 +94,32 @@ class ReservationControllerTest {
                 .isInstanceOf(Exception.class)
                 .hasMessageContaining("Flight not found");
     }
+
+    @Test
+    void testCompleteReservation() throws Exception {
+        // Given
+        given(reservationServ.bookFlight(reservationDTOArgumentCaptor.capture()))
+                .willReturn(reservationMock);
+
+        // When, Then
+        mockMvc.perform(post("/completeReservation")
+                        .param("firstName", "John")
+                        .param("lastName", "Doe")
+                        .param("phone", "1234567890")
+                        .param("email", "john.doe@example.com")
+                        .param("flightId", "1"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("reservationConfirmation"))
+                .andExpect(model().attribute("msg", "Reservation created successfully and the id is 1"))
+                .andExpect(content().string(containsString("Reservation created successfully and the id is 1")))
+                .andDo(print());
+
+        // Verify
+        assertThat(reservationDTOArgumentCaptor.getValue().getFirstName()).isEqualTo("John");
+        assertThat(reservationDTOArgumentCaptor.getValue().getLastName()).isEqualTo("Doe");
+        assertThat(reservationDTOArgumentCaptor.getValue().getPhone()).isEqualTo("1234567890");
+        assertThat(reservationDTOArgumentCaptor.getValue().getEmail()).isEqualTo("john.doe@example.com");
+        assertThat(reservationDTOArgumentCaptor.getValue().getFlightId()).isEqualTo(1L);
+    }
+
 }
