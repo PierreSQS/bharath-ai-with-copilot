@@ -16,12 +16,12 @@ public class ReservationRestController {
 
     @GetMapping("/{flightID}")
     public ResponseEntity<Reservation> findReservation(@PathVariable Long flightID) {
-        return reservationRepository.findById(flightID)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+            Reservation reservation = reservationRepository.findById(flightID)
+                    .orElseThrow(() -> new RuntimeException("Flight ID " + flightID + " not found"));
+            return ResponseEntity.ok(reservation);
     }
 
-    @PutMapping
+    @PostMapping
     public ResponseEntity<Reservation> updateReservation(@RequestBody ReservationUpdateDTO reservationUpdateDTO) {
         return reservationRepository.findById(reservationUpdateDTO.getId())
                 .map(reservation -> {
