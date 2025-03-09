@@ -23,7 +23,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public Reservation bookFlight(ReservationDTO reservationReqDTO) {
         // find the flight by requested flight id
-        Flight foundFlight = flightRepository.findById(reservationReqDTO.getId())
+        Flight foundFlight = flightRepository.findById(reservationReqDTO.getFlightId())
                 .orElseThrow(() -> new RuntimeException("Flight not found"));
 
         // create a new Passenger object set the field

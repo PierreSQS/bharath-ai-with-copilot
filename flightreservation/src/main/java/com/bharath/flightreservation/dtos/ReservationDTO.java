@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @Builder
 public class ReservationDTO {
-    private Long id;
+    private Long flightId;
     private String firstName;
     private String lastName;
     private String phone;
