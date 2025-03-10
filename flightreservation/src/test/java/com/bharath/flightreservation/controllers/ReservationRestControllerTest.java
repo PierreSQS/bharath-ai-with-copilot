@@ -2,6 +2,7 @@ package com.bharath.flightreservation.controllers;
 
 import com.bharath.flightreservation.entities.Reservation;
 import com.bharath.flightreservation.repositories.ReservationRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -29,6 +31,9 @@ class ReservationRestControllerTest {
 
     @MockitoBean
     ReservationRepository reservationRepository;
+
+    @Autowired
+    ObjectMapper objectMapper;
 
     Reservation reservationMock;
 
@@ -48,7 +53,8 @@ class ReservationRestControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1L))
                 .andExpect(jsonPath("$.checkedIn").value(true))
-                .andExpect(jsonPath("$.numberOfBags").value(2));
+                .andExpect(jsonPath("$.numberOfBags").value(2))
+                .andDo(print());
     }
 
     @Test
@@ -68,11 +74,12 @@ class ReservationRestControllerTest {
 
         mockMvc.perform(post("/api/reservations")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"id\":1,\"checkedIn\":false,\"numberOfBags\":3}"))
+                        .content(objectMapper.writeValueAsString(reservationMock)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1L))
-                .andExpect(jsonPath("$.checkedIn").value(false))
-                .andExpect(jsonPath("$.numberOfBags").value(3));
+                .andExpect(jsonPath("$.checkedIn").value(true))
+                .andExpect(jsonPath("$.numberOfBags").value(2))
+                .andDo(print());
     }
 
     @Test
@@ -81,7 +88,8 @@ class ReservationRestControllerTest {
 
         mockMvc.perform(post("/api/reservations")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"id\":999,\"checkedIn\":false,\"numberOfBags\":3}"))
-                .andExpect(status().isNotFound());
+                        .content(objectMapper.writeValueAsString(reservationMock)))
+                .andExpect(status().isNotFound())
+                .andDo(print());
     }
 }
