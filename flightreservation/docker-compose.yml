@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: flightreservation_app
+    image: your-app-name:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/reservation_db?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: flightadmin
+      SPRING_DATASOURCE_PASSWORD: flightadmin
+    depends_on:
+      - db
+
+  db:
+    container_name: flightreservation_db
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: reservation_db
+      MYSQL_USER: flightadmin
+      MYSQL_PASSWORD: flightadmin
+      MYSQL_ROOT_PASSWORD: rootpassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
