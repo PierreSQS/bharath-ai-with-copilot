@@ -1,9 +1,8 @@
 version: '3.8'
 
 services:
-  app:
+  flightreservation-app:
     container_name: flightreservation_app
-    image: your-app-name:latest
     build:
       context: .
       dockerfile: Dockerfile
@@ -16,16 +15,16 @@ services:
     depends_on:
       - db
 
-  db:
+  mysql:
     container_name: flightreservation_db
-    image: mysql:8.0
+    image: mysql:latest
     environment:
       MYSQL_DATABASE: reservation_db
       MYSQL_USER: flightadmin
       MYSQL_PASSWORD: flightadmin
       MYSQL_ROOT_PASSWORD: rootpassword
     ports:
-      - "3306:3306"
+      - "3308:3306"
     volumes:
       - db_data:/var/lib/mysql
 
