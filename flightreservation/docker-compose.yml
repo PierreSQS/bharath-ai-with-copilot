@@ -20,7 +20,7 @@ services:
       MYSQL_DATABASE: reservation_db
       MYSQL_USER: flightadmin
       MYSQL_PASSWORD: flightadmin
-      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_ROOT_PASSWORD: Galerien3?
     ports:
       - "3308:3306"
     volumes:
