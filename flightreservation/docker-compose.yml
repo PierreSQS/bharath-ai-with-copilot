@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   flightreservation-app:
     container_name: flightreservation_app
@@ -13,7 +11,7 @@ services:
       SPRING_DATASOURCE_USERNAME: flightadmin
       SPRING_DATASOURCE_PASSWORD: flightadmin
     depends_on:
-      - db
+      - mysql
 
   mysql:
     container_name: flightreservation_db
