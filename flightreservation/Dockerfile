@@ -11,4 +11,4 @@ COPY target/flightreservation-0.0.1-SNAPSHOT.jar /app/flightreservation-0.0.1-SN
 EXPOSE 8080
 
 # Run the JAR file
-ENTRYPOINT ["java", "-jar", "/app/flightreservation-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=prod", "/app/flightreservation-0.0.1-SNAPSHOT.jar"]
