@@ -8,8 +8,8 @@ services:
       - "8080:8080"
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://flightreservation_db:3306/reservation_db?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
-      SPRING_DATASOURCE_USERNAME: flightadmin
-      SPRING_DATASOURCE_PASSWORD: flightadmin
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: Galerien3?
     depends_on:
       mysql:
         condition: service_healthy
