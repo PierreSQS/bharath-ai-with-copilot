@@ -21,12 +21,12 @@ services:
       MYSQL_DATABASE: reservation_db
       MYSQL_USER: flightadmin
       MYSQL_PASSWORD: flightadmin
-      MYSQL_ROOT_PASSWORD: Galerien3?
     ports:
       - "3308:3306"
     volumes:
       - db_data:/var/lib/mysql
-      - ./sql-scripts:/docker-entrypoint-initdb.d
+      # copy the SQL file to the docker-entrypoint-initdb.d directory
+      - ./src/main/resources/scripts/Pierrot_Reservation.sql:/docker-entrypoint-initdb.d/Pierrot_Reservation.sql
     healthcheck:
       test: ["CMD-SHELL", "mysqladmin ping -h localhost"]
       interval: 10s
